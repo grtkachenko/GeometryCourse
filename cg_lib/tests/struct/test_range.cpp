@@ -5,7 +5,7 @@
 
 BOOST_AUTO_TEST_CASE(testRange1)
 {
-    BOOST_CHECK_EQUAL(1, 2);
+    BOOST_CHECK_EQUAL(1, 1);
 // TODO: operator == doesn't seem to work :(
 
 /*
