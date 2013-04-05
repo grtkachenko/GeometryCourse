@@ -9,6 +9,7 @@
 
 BOOST_AUTO_TEST_CASE(testTurn1)
 {
+    std::cout << "turn!\n" << std::endl;
     std::random_device rd;
     std::default_random_engine e(rd());
     std::uniform_real_distribution<double> rnd(0, 1);
