@@ -2,7 +2,7 @@
 
 #include <gmpxx.h>
 
-#include "primitives/vector.h"
+#include "cg_lib/primitives/vector.h"
 
 namespace primitives
 {
@@ -43,10 +43,24 @@ inline bool operator < (point_2t<Scalar> const &a, point_2t<Scalar> const &b)
 }
 
 template <class Scalar>
+inline bool operator <= (point_2t<Scalar> const &a, point_2t<Scalar> const &b)
+{
+    return (a.x <= b.x) || (a.x == b.x && a.y <= b.y);
+}
+
+
+template <class Scalar>
 bool operator > (point_2t<Scalar> const &a, point_2t<Scalar> const &b)
 {
     return b < a;
 }
+
+template <class Scalar>
+bool operator >= (point_2t<Scalar> const &a, point_2t<Scalar> const &b)
+{
+    return b <= a;
+}
+
 
 template <class Scalar>
 bool operator == (point_2t<Scalar> const &a, point_2t<Scalar> const &b)

@@ -1,17 +1,36 @@
 #include <vector>
  
-#define BOOST_TEST_MODULE testIntersect
+#define BOOST_TEST_MODULE testInter
 #include <boost/test/unit_test.hpp>
 
-#include "algo/intersect.h"
+
+#include "algo/segment_intersect.h"
+
+using namespace std;
+using namespace primitives;
+using namespace cg;
 
 BOOST_AUTO_TEST_CASE(testIntersect1)
 {
-    std::cout << "intersect!\n" << std::endl;
-	std::vector<int> v1 = {10, 20, 30, 40, 50, 53, 70, 2832};
-	std::vector<int> v2;
-	intersect(v1.begin(), v1.end(), 30, 52, std::back_inserter(v2));
-	std::vector<int> ans = {30, 40, 50};
 
-	BOOST_CHECK_EQUAL_COLLECTIONS(v2.begin(), v2.end(), ans.begin(), ans.end());
+    point_2t<double> a(0, 0), b(1, 1), c(0, 1), d(1, 0);
+    segment_2t<double> seg1(a, b), seg2(c, d);
+    BOOST_CHECK_EQUAL(intersect_segments(seg1, seg2), true);
 }
+
+BOOST_AUTO_TEST_CASE(testIntersect2)
+{
+
+    point_2t<double> a(0, 0), b(1, 1), c(0, 1), d(1, 0);
+    segment_2t<double> seg1(a, c), seg2(b, d);
+    BOOST_CHECK_EQUAL(intersect_segments(seg1, seg2), false);
+}
+
+BOOST_AUTO_TEST_CASE(testIntersect3)
+{
+
+    point_2t<double> a(0, 0), b(1, 1), c(0, 1);
+    segment_2t<double> seg1(a, c), seg2(a, b);
+    BOOST_CHECK_EQUAL(intersect_segments(seg1, seg2), true);
+}
+

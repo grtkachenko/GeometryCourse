@@ -1,30 +1,56 @@
 #pragma once
-#include <iostream>
-template <class CoordType>
-class Range {
-private:
-    CoordType left;
-    CoordType right;
-public:
-    Range() {}
 
-    Range(CoordType left, CoordType right) {
-        this->left = left;
-        this->right = right;
-    }
+#include <limits>
 
-    Range& operator &= (const Range& right) {
-        if (this->right <= right.left) {
-            this->right = this->left;
-        } else {
-            this->left = std::max(this->left, right.left);
-            this->right = std::min(this->right, right.right);
-        }
+namespace cg
+{
+   // closed range
+   template <class Scalar>
+   struct range_t;
 
-        return *this;
-    }
-    friend std::ostream& operator << (std::ostream& ofs, const Range& r) {
-        ofs << r.left << ", " << r.right;
-        return ofs;
-    }
-};
+   typedef range_t<float> range_f;
+   typedef range_t<int> range_i;
+
+   template <class Scalar>
+   struct range_t
+   {
+      Scalar inf, sup;
+
+      range_t(Scalar inf, Scalar sup)
+         : inf(inf)
+         , sup(sup)
+      {}
+
+      range_t()
+         : inf(0)
+         , sup(-1)
+      {}
+
+      bool is_empty() const { return inf > sup; }
+
+      bool contains(Scalar x) const { return (inf <= x) && (x <= sup); }
+
+      static range_t maximal()
+      {
+         static const Scalar max_val = std::numeric_limits<Scalar>::max();
+         return range_t(-max_val, max_val);
+      }
+   };
+
+   template <class Scalar>
+   range_t<Scalar> const operator & (range_t<Scalar> const & a, range_t<Scalar> const & b)
+   {
+      return range_f(std::max(a.inf, b.inf), std::min(a.sup, b.sup));
+   }
+
+   inline float center(range_f const & r)
+   {
+      return .5f + r.inf / 2.f + r.sup / 2.f;
+   }
+
+   template <class Scalar>
+   Scalar size(range_t<Scalar> const & r)
+   {
+      return r.sup - r.inf;
+   }
+}
